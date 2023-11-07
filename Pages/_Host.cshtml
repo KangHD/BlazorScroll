@@ -1,0 +1,144 @@
+﻿@page "/"
+@namespace BlazorScroll.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <base href="~/" />
+    <title>블레이저타이틀</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/nucleo-icons.css" rel="stylesheet" />
+    <link href="css/nucleo-svg.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body class="g-sidenav-show bg-gray-100">
+    @{
+        var isIEOrEdgeLegacy = Request.Headers["User-Agent"]
+        .Any(userAgent => userAgent.Contains("MSIE") || userAgent.Contains("Trident") || userAgent.Contains("Edge/"));
+    }
+    @if (isIEOrEdgeLegacy)
+    {
+        <component type="typeof(BlazorScroll.Shared.BrowserNotSupported)" render-mode="Static" />
+    }
+    else
+    {
+        <main>
+            <component type="typeof(App)" render-mode="ServerPrerendered" />
+        </main>
+
+        <div id="blazor-error-ui">
+            <environment include="Staging,Production">
+                오류가 발생했습니다. 이 응용 프로그램은 다시 로드할 때까지 더 이상 응답하지 않을 수 있습니다.
+            </environment>
+            <environment include="Development">
+                처리되지 않은 예외가 발생했습니다. 자세한 내용은 브라우저 개발 도구를 참조하세요.
+            </environment>
+            <a href="" class="reload">새로고침</a>
+            <a class="dismiss">X</a>
+        </div>
+
+        <script src="_framework/blazor.server.js"></script>
+        <script src="js/scroll-timeline.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations-next.min.js"></script> //Groupeffect
+    }
+    <script>
+
+        function firstset(){
+
+            let progress = document.querySelector('.progress');
+            let scrollBox = document.querySelector('.scroll-box');
+            let targetImages = document.querySelectorAll('.target-image');
+
+            progress.animate(
+                [
+                    { transform: 'scaleX(0)' },
+                    { transform: 'scaleX(1)' }
+                ],
+                {
+                    timeline: new ScrollTimeline({
+                        scrollOffsets: [
+                            { target: document.body, edge: 'start', threshold: 1 },
+                            { target: document.body, edge: 'end', threshold: 1 }
+                            // { target: scrollBox, edge: 'start', threshold: 1 },
+                            // { target: scrollBox, edge: 'end', threshold: 1 }
+                        ]
+                    })
+                }
+            );
+
+            targetImages.forEach(image => {
+                let imageTop = image.offsetTop;
+                let imageHeight = image.offsetHeight;
+
+                let offset1 = imageTop + imageHeight - window.innerHeight;
+                let offset2 = imageTop - 200;
+
+                image.animate(
+                    [
+                        { opacity: 0 },
+                        { opacity: 1 }
+                    ],
+                    {
+                        timeline: new ScrollTimeline({
+                            scrollOffsets: [
+                                new CSSUnitValue(offset1, 'px'),
+                                new CSSUnitValue(offset2, 'px')
+                            ]
+                        })
+                    }
+                );
+            });
+        }
+
+        function secondset(){
+
+            let airplane = document.querySelector('.airplane');
+            let airplaneScrollTimeline = document.querySelector('.airplane-scroll-timeline');
+
+            airplane.animate(
+                [
+                    { offsetDistance: '100%' },
+                    { offsetDistance: '0%' }
+                ],
+                {
+                    fill: 'both',
+                    timeline: new ScrollTimeline({
+                        scrollOffsets: [
+                            { target: airplaneScrollTimeline, edge: 'start', threshold: 1 },
+                            { target: airplaneScrollTimeline, edge: 'end', threshold: 1 }
+                        ]
+                    })
+                }
+            );
+        }
+
+        function thirdset(){
+
+            let gallery = document.querySelector('.gallery');
+            let galleryTimeline = document.querySelector('.gallery-timeline');
+
+            gallery.animate(
+                [
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(calc(-100% + 100vw))' }
+                ],
+                {
+                    fill: 'both',
+                    timeline: new ScrollTimeline({
+                        scrollOffsets: [
+                            { target: galleryTimeline, edge: 'start', threshold: 1 },
+                            { target: galleryTimeline, edge: 'end', threshold: 1 }
+                        ]
+                    })
+                }
+            );
+        }
+    </script>
+</body>
+</html>
