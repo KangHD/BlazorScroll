@@ -49,62 +49,107 @@
     }
     <script>
 
-        function firstset(){
+        //function firstset(){
 
-            let progress = document.querySelector('.progress');
-            let scrollBox = document.querySelector('.scroll-box');
-            let targetImages = document.querySelectorAll('.target-image');
+        //    let progress = document.querySelector('.progress');
+        //    let scrollBox = document.querySelector('.scroll-box');
+        //    let targetImages = document.querySelectorAll('.target-image');
 
-            progress.animate(
-                [
-                    { transform: 'scaleX(0)' },
-                    { transform: 'scaleX(1)' }
-                ],
-                {
-                    timeline: new ScrollTimeline({
-                        scrollOffsets: [
-                            { target: document.body, edge: 'start', threshold: 1 },
-                            { target: document.body, edge: 'end', threshold: 1 }
-                            // { target: scrollBox, edge: 'start', threshold: 1 },
-                            // { target: scrollBox, edge: 'end', threshold: 1 }
-                        ]
-                    })
-                }
-            );
+        //    progress.animate(
+        //        [
+        //            { transform: 'scaleX(0)' },
+        //            { transform: 'scaleX(1)' }
+        //        ],
+        //        {
+        //            timeline: new ScrollTimeline({
+        //                scrollOffsets: [
+        //                    { target: document.body, edge: 'start', threshold: 1 },
+        //                    { target: document.body, edge: 'end', threshold: 1 }
+        //                    // { target: scrollBox, edge: 'start', threshold: 1 },
+        //                    // { target: scrollBox, edge: 'end', threshold: 1 }
+        //                ]
+        //            })
+        //        }
+        //    );
 
-            targetImages.forEach(image => {
-                let imageTop = image.offsetTop;
-                let imageHeight = image.offsetHeight;
+        //    targetImages.forEach(image => {
+        //        let imageTop = image.offsetTop;
+        //        let imageHeight = image.offsetHeight;
 
-                let offset1 = imageTop + imageHeight - window.innerHeight;
-                let offset2 = imageTop - 200;
+        //        let offset1 = imageTop + imageHeight - window.innerHeight;
+        //        let offset2 = imageTop - 200;
 
-                image.animate(
-                    [
-                        { opacity: 0 },
-                        { opacity: 1 }
-                    ],
-                    {
-                        timeline: new ScrollTimeline({
-                            scrollOffsets: [
-                                new CSSUnitValue(offset1, 'px'),
-                                new CSSUnitValue(offset2, 'px')
-                            ]
-                        })
-                    }
-                );
-            });
-        }
+        //        image.animate(
+        //            [
+        //                { opacity: 0 },
+        //                { opacity: 1 }
+        //            ],
+        //            {
+        //                timeline: new ScrollTimeline({
+        //                    scrollOffsets: [
+        //                        new CSSUnitValue(offset1, 'px'),
+        //                        new CSSUnitValue(offset2, 'px')
+        //                    ]
+        //                })
+        //            }
+        //        );
+        //    });
+        //}
 
-        function secondset(){
+        //function secondset(){
 
+        //    let airplane = document.querySelector('.airplane');
+        //    let airplaneScrollTimeline = document.querySelector('.airplane-scroll-timeline');
+
+        //    airplane.animate(
+        //        [
+        //            { offsetDistance: '100%' },
+        //            { offsetDistance: '0%' }
+        //        ],
+        //        {
+        //            fill: 'both',
+        //            timeline: new ScrollTimeline({
+        //                scrollOffsets: [
+        //                    { target: airplaneScrollTimeline, edge: 'start', threshold: 1 },
+        //                    { target: airplaneScrollTimeline, edge: 'end', threshold: 1 }
+        //                ]
+        //            })
+        //        }
+        //    );
+        //}
+
+        //function thirdset() {
+
+        //    let gallery = document.querySelector('.gallery');
+        //    let galleryTimeline = document.querySelector('.gallery-timeline');
+
+        //    gallery.animate(
+        //        [
+        //            { transform: 'translateX(0)' },
+        //            { transform: 'translateX(calc(-100% + 100vw))' }
+        //        ],
+        //        {
+        //            fill: 'both',
+        //            timeline: new ScrollTimeline({
+        //                scrollOffsets: [
+        //                    { target: galleryTimeline, edge: 'start', threshold: 1 },
+        //                    { target: galleryTimeline, edge: 'end', threshold: 1 }
+        //                ]
+        //            })
+        //        }
+        //    );
+        //}
+
+        function fourthset(){
             let airplane = document.querySelector('.airplane');
             let airplaneScrollTimeline = document.querySelector('.airplane-scroll-timeline');
 
             airplane.animate(
                 [
-                    { offsetDistance: '100%' },
-                    { offsetDistance: '0%' }
+                    { offsetDistance: '100%', offset: 0 },
+                    { offsetDistance: '47%', offset: 0.4 },
+                    { offsetDistance: '47%', offset: 0.58 },
+                    { offsetDistance: '0%', offset: 1 },
                 ],
                 {
                     fill: 'both',
@@ -116,28 +161,112 @@
                     })
                 }
             );
-        }
 
-        function thirdset(){
+            // 스크롤
+            let prevScrollY = -1; // 처음 스크롤 할 때 오락가락 방지
+            let scrollFlag;
+            window.addEventListener('scroll', e => {
+                if (scrollFlag) return;
 
+                scrollFlag = true;
+
+                setTimeout(() => {
+                    scrollFlag = false;
+
+                    if (window.scrollY >= prevScrollY) {
+                        console.log('down');
+                        airplane.dataset.direction = 'down';
+                    } else {
+                        console.log('up');
+                        airplane.dataset.direction = 'up';
+                    }
+                    prevScrollY = window.scrollY;
+                }, 100);
+            });
+
+            let galleryTimelineElem = document.querySelector('.gallery-timeline');
             let gallery = document.querySelector('.gallery');
-            let galleryTimeline = document.querySelector('.gallery-timeline');
 
             gallery.animate(
                 [
-                    { transform: 'translateX(0)' },
-                    { transform: 'translateX(calc(-100% + 100vw))' }
+                    { opacity: 0, offset: 0 },
+                    { opacity: 1, offset: 0.04 },
+                    { transform: 'translateX(0)', offset: 0.1 },
+                    { transform: 'translateX(calc(-100% + 100vw)', offset: 0.9 },
+                    { opacity: 1, offset: 0.96 },
+                    { opacity: 0, transform: 'translateX(calc(-100% + 100vw)', offset: 1 }
                 ],
                 {
-                    fill: 'both',
+                    duration: 1,
+                    fill: "both",
                     timeline: new ScrollTimeline({
                         scrollOffsets: [
-                            { target: galleryTimeline, edge: 'start', threshold: 1 },
-                            { target: galleryTimeline, edge: 'end', threshold: 1 }
+                            { target: galleryTimelineElem, edge: "start", threshold: 1 },
+                            { target: galleryTimelineElem, edge: "end", threshold: 1 }
                         ]
                     })
                 }
             );
+
+            let helloJeju = document.querySelector('.hello-jeju');
+            //let airplaneScrollTimeline = document.querySelector('.airplane-scroll-timeline');
+
+            helloJeju.animate(
+                [
+                    { opacity: 0, transform: 'scale(0.5)', offset: 0 },
+                    { opacity: 0, transform: 'scale(0.5)', offset: 0.17 },
+                    { opacity: 1, transform: 'scale(1.2)', offset: 0.2 },
+                    { transform: 'scale(1)', offset: 0.3 }
+                ],
+                {
+                    fill: "both",
+                    timeline: new ScrollTimeline({
+                        scrollOffsets: [
+                            { target: airplaneScrollTimeline, edge: "start", threshold: 1 },
+                            { target: airplaneScrollTimeline, edge: "end", threshold: 1 }
+                        ]
+                    })
+                }
+            );
+
+
+            document.body.animate(
+                [
+                    { backgroundColor: 'midnightblue' },
+                    { backgroundColor: 'dodgerblue' },
+                    { backgroundColor: 'coral' }
+                ],
+                {
+                    fill: "both",
+                    timeline: new ScrollTimeline({
+                        scrollOffsets: [
+                            { target: document.body, edge: "start", threshold: 1 },
+                            { target: document.body, edge: "end", threshold: 1 }
+                        ]
+                    })
+                }
+            );
+
+            let track = document.querySelector('.track');
+            //let galleryTimelineElem = document.querySelector('.gallery-timeline');
+
+            track.animate(
+                [
+                    { transform: 'translate(-50%, 0)' },
+                    { transform: 'translate(-50%, calc(2000px - 100vh))' }
+                    // .gallery-timeline의 높이가 2000px
+                ],
+                {
+                    fill: "both",
+                    timeline: new ScrollTimeline({
+                        scrollOffsets: [
+                            { target: galleryTimelineElem, edge: "start", threshold: 1 },
+                            { target: galleryTimelineElem, edge: "end", threshold: 1 }
+                        ]
+                    })
+                }
+            );
+
         }
     </script>
 </body>
